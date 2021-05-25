@@ -1,5 +1,6 @@
 buildscript {
 	repositories {
+		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 		maven { url "https://repo.spring.io/plugins-release" }
 	}
 	dependencies {
@@ -151,6 +152,7 @@ configure(allprojects) { project ->
 	}
 
 	repositories {
+		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 		maven { url "https://repo.spring.io/libs-release" }
 	}
 
@@ -236,14 +238,14 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 		// Don't include or exclude anything explicitly by default. See SPR-12085.
 	}
 
-	task javadocJar(type: Jar) {
-		classifier = "javadoc"
-		from javadoc
-	}
+//	task javadocJar(type: Jar) {
+//		classifier = "javadoc"
+//		from javadoc
+//	}
 
 	artifacts {
 		archives sourcesJar
-		archives javadocJar
+//		archives javadocJar
 	}
 }
 
@@ -283,9 +285,9 @@ configure(rootProject) {
 	}
 
 	artifacts {
-		archives docsZip
-		archives schemaZip
-		archives distZip
+//		archives docsZip
+//		archives schemaZip
+//		archives distZip
 	}
 
 	task wrapper(type: Wrapper) {
