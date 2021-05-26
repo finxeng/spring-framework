@@ -16,8 +16,8 @@ public class ApplicationSimpleTest {
 		ApplicationSimple applicationSimple = (ApplicationSimple) context.getBean("applicationSimple");
 		System.out.println(applicationSimple.getName());
 
-		JdbcTemplate template = (JdbcTemplate) context.getBean("jdbcTemplate");
-		Map<String, Object> map = template.queryForMap("select * from mcp_cdn_prov where id=1");
-		System.out.println(JSONObject.toJSONString(map));
+//		JdbcTemplate template = (JdbcTemplate) context.getBean("jdbcTemplate");
+//		Map<String, Object> map = template.queryForMap("select * from mcp_cdn_prov where id=1");
+//		System.out.println(JSONObject.toJSONString(map));
 	}
 }
