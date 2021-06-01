@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HelloController {
+
 	@RequestMapping("/hello/string")
 	public String returnString() {
 		return "index";
