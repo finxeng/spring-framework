@@ -8,6 +8,8 @@
 		<param-value>classpath:spring-mvc.xml</param-value>
 	</context-param>
 
+	<!-- ContextLoaderListener实现了ServletContextListener，而ServletContextListener是用来处理tomcat启动、停止ServletContextEvent事件，
+	所以spring容器是通过tomcat发布的ServletContextEvent启动事件来开始创建spring上下文的 -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

@@ -20,6 +20,9 @@ public class ApplicationSimpleTest {
 	public void testXml(){
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ApplicationSimple applicationSimple = (ApplicationSimple) context.getBean("applicationSimple");
+		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
+			System.out.println(beanDefinitionName);
+		}
 		System.out.println(applicationSimple.getName());
 
 //		ApplicationSimple applicationSimple_1 = (ApplicationSimple) beanFactory.getBean("applicationSimple");
