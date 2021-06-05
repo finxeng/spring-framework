@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HelloController {
 
+	/**
+	 * 注入应用上下文，无需xml配置
+	 */
 	@Autowired
 	ApplicationContext context;
 
