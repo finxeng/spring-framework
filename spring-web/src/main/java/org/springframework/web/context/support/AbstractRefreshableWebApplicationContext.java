@@ -166,7 +166,8 @@ public abstract class AbstractRefreshableWebApplicationContext extends AbstractR
 	 */
 	@Override
 	protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-		//后置处理器，手动注入ServletContextAware和ServletConfigAware
+		//前置处理器，手动注入ServletContextAware和ServletConfigAware
+		//ServletContextAwareProcessor 实现了 BeanPostProcessor
 		beanFactory.addBeanPostProcessor(new ServletContextAwareProcessor(this.servletContext, this.servletConfig));
 		beanFactory.ignoreDependencyInterface(ServletContextAware.class);
 		beanFactory.ignoreDependencyInterface(ServletConfigAware.class);

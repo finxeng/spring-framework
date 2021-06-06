@@ -521,6 +521,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Tell the subclass to refresh the internal bean factory.
 			// 创建BeanFactory 且根据xml文件创建beanDefinitions
+			// 同时 根据xml文件创建beanDefinitions
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -529,15 +530,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				//向beanFactory的beanPostProcessors中添加ServletContextAwareProcessor
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-				//实例化和调用所有 BeanFactoryPostProcessor
+				//实例化和调用所有实现了 BeanFactoryPostProcessor及其子类实现BeanDefinitionRegistryPostProcessor类的前置处理器
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
-				// 实例化 BeanPostProcessor 将所有实现了 BeanPostProcessor 接口的类加载到 BeanFactory 中。
-				//BeanPostProcessor实现类具体的 “出场时机” 在创建 bean实例时，执行初始化方法前后。postProcessBeforeInitialization()方法在执行初始化方法前被调用，postProcessAfterInitialization方法在执行初始化方法后被调用。
+				// 实例化 BeanPostProcessor
+				// 将所有实现了 BeanPostProcessor 接口的类加载到 BeanFactory 中。
+				//BeanPostProcessor实现类具体的 “出场时机” 在创建 bean实例时，执行初始化方法前后。
+				// postProcessBeforeInitialization()方法在执行初始化方法前被调用，
+				// postProcessAfterInitialization方法在执行初始化方法后被调用。
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
@@ -662,6 +667,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		 * 主要作用是，如果容器中bean实现了ApplicationContextAwareProcessor中invokeAwareInterfaces方法中手动注入的的6个Aware
 		 * 就可以通过setter注入的方式拿到指定构造器参数对应的bean
 		 * 实现ApplicationContextAware，则通过声明ApplicationContext applicationContext属性获取到上下文
+		 *
+		 * 注意：ApplicationContextAwareProcessor为 BeanPostProcessor的实现
 		 */
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		/**

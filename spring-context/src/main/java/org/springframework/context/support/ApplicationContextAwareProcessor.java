@@ -99,6 +99,11 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 		return bean;
 	}
 
+	/**
+	 * 该类实现了 BeanPostProcessor接口，根据如上代码，可知，如果类实现类如下的*Aware，则会自动为实现*Aware的类赋值如下属性
+	 * 执行时机实在bean初始化之前，{@link org.springframework.context.support.ApplicationContextAwareProcessor#postProcessBeforeInitialization}
+	 * @param bean
+	 */
 	private void invokeAwareInterfaces(Object bean) {
 		if (bean instanceof Aware) {
 			if (bean instanceof EnvironmentAware) {
