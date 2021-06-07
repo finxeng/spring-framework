@@ -537,12 +537,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				//实例化和调用所有实现了 BeanFactoryPostProcessor及其子类实现BeanDefinitionRegistryPostProcessor类的前置处理器
 				invokeBeanFactoryPostProcessors(beanFactory);
 
+				/**
+				 * 实例化 BeanPostProcessor
+				 * 将所有实现了 BeanPostProcessor 接口的类加载到 BeanFactory的beanPostProcessors属性中。
+				 *
+				 * BeanPostProcessor实现类具体的 “出场时机” 在创建 bean实例时，执行初始化方法前后。
+				 * postProcessBeforeInitialization()方法在执行初始化方法前被调用，
+				 * postProcessAfterInitialization方法在执行初始化方法后被调用。
+				 */
 				// Register bean processors that intercept bean creation.
-				// 实例化 BeanPostProcessor
-				// 将所有实现了 BeanPostProcessor 接口的类加载到 BeanFactory 中。
-				//BeanPostProcessor实现类具体的 “出场时机” 在创建 bean实例时，执行初始化方法前后。
-				// postProcessBeforeInitialization()方法在执行初始化方法前被调用，
-				// postProcessAfterInitialization方法在执行初始化方法后被调用。
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
@@ -560,6 +563,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				/**
+				 * Bean初始化、实例化
+				 * BeanPostProcessor的所有实现类的前后置处理器会依次在bean的初始化前后执行
+				 */
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -918,6 +925,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 实例化所有非懒加载的bean 单例
 		beanFactory.preInstantiateSingletons();
 	}
 

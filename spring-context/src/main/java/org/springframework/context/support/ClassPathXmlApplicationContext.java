@@ -139,7 +139,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 		/**
 		 * 将父Environment追加到当前Environment中去
-		 * 创建PathMatchingResourcePatternResolver实例
+		 * 创建{@link org.springframework.core.io.support.PathMatchingResourcePatternResolver}实例
 		 */
 		super(parent);
 		//将传入的xml配置文件保存至configLocations中（String[]）
