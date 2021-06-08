@@ -737,6 +737,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			//获取Root Bean Definition
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				//判断是否为FactoryBean {@link org.springframework.beans.factory.FactoryBean}.
 				if (isFactoryBean(beanName)) {
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {
@@ -757,7 +758,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
-					//无条件 Bean初始化流程
+					//实例化bean
 					getBean(beanName);
 				}
 			}

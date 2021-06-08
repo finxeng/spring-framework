@@ -239,11 +239,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
+		//对bean名称做转换处理
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
-		// 判断bena是否已经实例化
+		// 判断bean是否已经实例化
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isDebugEnabled()) {
@@ -261,6 +262,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
+			//单钱bean是否正在创建过程中
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -293,6 +295,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
+				// 保证bean所依赖的bean都被实例化
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
@@ -300,8 +303,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
+						//为指定的beanName注册依赖dep
 						registerDependentBean(dep, beanName);
 						try {
+							//把beanName的依赖bean dep实例化
 							getBean(dep);
 						}
 						catch (NoSuchBeanDefinitionException ex) {
@@ -315,7 +320,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
-							//无条件 Bean初始化、实例化流程
+							//实例化无依赖无其他依赖条件的bean
 							return createBean(beanName, mbd, args);
 						}
 						catch (BeansException ex) {
@@ -391,6 +396,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
 			}
 		}
+		//返回执行类型bean的实例
 		return (T) bean;
 	}
 

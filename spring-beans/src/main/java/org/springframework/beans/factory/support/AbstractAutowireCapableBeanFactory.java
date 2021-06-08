@@ -573,7 +573,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Initialize the bean instance.
-		// 初始化bena
+		// 初始化bean
 		Object exposedObject = bean;
 		try {
 			//给BeanWrapper中的bean填充属性

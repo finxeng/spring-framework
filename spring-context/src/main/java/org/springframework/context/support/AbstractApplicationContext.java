@@ -549,7 +549,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				//国际化相关
+				// 国际化相关
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
@@ -560,19 +560,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				onRefresh();
 
 				// Check for listener beans and register them.
+				// 时间监听器的创建，多播器(个人理解其实就是listener的集合处理拓展类)
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
 				/**
-				 * Bean初始化、实例化
+				 * Bean首先实例化、再初始化
 				 * BeanPostProcessor的所有实现类的前后置处理器会依次在bean的初始化前后执行
 				 */
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 清理部分应用缓存，发布初始化完成时间
 				finishRefresh();
 			}
-
+			// 异常处理机制
 			catch (BeansException ex) {
 				if (logger.isWarnEnabled()) {
 					logger.warn("Exception encountered during context initialization - " +
@@ -592,6 +594,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			finally {
 				// Reset common introspection caches in Spring's core, since we
 				// might not ever need metadata for singleton beans anymore...
+				// 重制一些公共缓存
 				resetCommonCaches();
 			}
 		}
@@ -925,7 +928,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
-		// 实例化所有非懒加载的bean 单例
+		// 实例化所有非懒加载的单例bean
 		beanFactory.preInstantiateSingletons();
 	}
 
