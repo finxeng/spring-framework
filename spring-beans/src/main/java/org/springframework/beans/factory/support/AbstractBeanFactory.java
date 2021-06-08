@@ -239,7 +239,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
-		//对bean名称做转换处理
+		// 对bean名称做转换处理
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
@@ -262,7 +262,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
-			//单钱bean是否正在创建过程中
+			//单例bean是否正在创建过程中
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -297,6 +297,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// Guarantee initialization of beans that the current bean depends on.
 				// 保证bean所依赖的bean都被实例化
 				String[] dependsOn = mbd.getDependsOn();
+				// 如果当前需要实例化的bean所依赖的bean没有被初始化则首先对依赖的bean实例化、初始化
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
 						if (isDependent(beanName, dep)) {
@@ -317,10 +318,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
+				// 开始实例、初始化当前的bean
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
-							//实例化无依赖无其他依赖条件的bean
+							//实例化、初始化无依赖无其他依赖条件的bean
 							return createBean(beanName, mbd, args);
 						}
 						catch (BeansException ex) {

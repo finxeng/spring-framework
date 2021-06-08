@@ -730,12 +730,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		// Iterate over a copy to allow for init methods which in turn register new bean definitions.
 		// While this may not be part of the regular factory bootstrap, it does otherwise work fine.
+		// 获取之前通过xml加载的beanDefinition name名称
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 
 		// Trigger initialization of all non-lazy singleton beans...
+		// 开始bean的实例化、初始化工作
 		for (String beanName : beanNames) {
 			//获取Root Bean Definition
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			//只能实例、初始化非抽象、单例、非懒加载的bean
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				//判断是否为FactoryBean {@link org.springframework.beans.factory.FactoryBean}.
 				if (isFactoryBean(beanName)) {
@@ -758,14 +761,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
-					//实例化bean
+					//实例化、初始化bean
 					getBean(beanName);
 				}
 			}
 		}
+		// 结束bean的实例化、初始化工作
 
 		// Trigger post-initialization callback for all applicable beans...
-		// bean实例化结束之后进行特定的相关处理，如果需要请实现SmartInitializingSingleton
+		// bean实例化、初始化结束之后进行特定的相关处理，如果需要请实现SmartInitializingSingleton（执行afterSingletonsInstantiated）
 		for (String beanName : beanNames) {
 			Object singletonInstance = getSingleton(beanName);
 			if (singletonInstance instanceof SmartInitializingSingleton) {
