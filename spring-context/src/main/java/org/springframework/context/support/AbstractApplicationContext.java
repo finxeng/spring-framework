@@ -517,6 +517,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
 			// 设置environment属性值、校验；初始化事件监听集合
+			// 初始化earlyApplicationEvents（ApplicationEvent Set集合）
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
@@ -614,12 +615,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment
-		// 向environment设置属性值，目前是空方法 供自行扩展
+		// 如果StandardEnvironment 不存在 则创建
+		// 向environment设置属性值
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable
 		// see ConfigurablePropertyResolver#setRequiredProperties
-		// 创建并获取环境对象，验证需要的属性文件是否都已经放入环境中
+		// 获取环境对象，验证需要的属性文件是否都已经放入环境中
 		getEnvironment().validateRequiredProperties();
 
 		// Allow for the collection of early ApplicationEvents,
