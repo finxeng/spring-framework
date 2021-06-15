@@ -258,11 +258,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
-
+		//bean没有实例化
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
-			//单例bean是否有循环依赖关系
+			//单例bean是否正在实例化中
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -285,7 +285,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					return parentBeanFactory.getBean(nameToLookup, requiredType);
 				}
 			}
-
+			//标记bean正在创建中
 			if (!typeCheckOnly) {
 				markBeanAsCreated(beanName);
 			}
