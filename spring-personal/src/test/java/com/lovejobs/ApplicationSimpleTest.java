@@ -1,6 +1,7 @@
 package com.lovejobs;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lovejobs.config.bean.AspectJBean;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class ApplicationSimpleTest {
 			System.out.println(beanDefinitionName);
 		}
 		System.out.println(applicationSimple.getName());
+		AspectJBean aspectJBean = (AspectJBean) context.getBean("aspectJBean");
+		aspectJBean.getName();
 
 //		ApplicationSimple applicationSimple_1 = (ApplicationSimple) beanFactory.getBean("applicationSimple");
 //		System.out.println(applicationSimple.getName());

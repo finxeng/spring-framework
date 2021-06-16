@@ -13,6 +13,9 @@ dependencies {
     compile(project(":spring-webmvc"))
     compile(project(":spring-context"))
     compile(project(":spring-jdbc"))
+    compile(project(":spring-core"))
+    compile(project(":spring-context"))
+    optional("org.aspectj:aspectjweaver:${aspectjVersion}")
     implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.76'
     compile ("mysql:mysql-connector-java:5.1.24")
     optional("junit:junit:4.12")
