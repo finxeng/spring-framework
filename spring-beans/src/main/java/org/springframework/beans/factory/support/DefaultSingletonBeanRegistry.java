@@ -75,7 +75,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
 	/** Cache of singleton factories: bean name --> ObjectFactory */
-	// 保存 bean name和实例bena工厂
+	// 保存 bean name和实例bean工厂
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name --> bean instance */
@@ -87,6 +87,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
 	/** Names of beans that are currently in creation */
+	//用于保持当前正在实例化中的bean
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
@@ -178,9 +179,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-		//检查单例缓存对象中是否存在当前bena
+		//检查单例缓存对象中是否存在当前bean
 		Object singletonObject = this.singletonObjects.get(beanName);
-		//不存在，且这个bean不存在循环依赖的关系
+		//不存在，且当前bean不在实例化中
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			//全局锁定
 			synchronized (this.singletonObjects) {
@@ -220,6 +221,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+				//编辑bean正在创建中
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
@@ -250,9 +252,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
+					//取消标记bean正在创建中
 					afterSingletonCreation(beanName);
 				}
 				if (newSingleton) {
+					//在缓存中添加该bean原生对象
 					addSingleton(beanName, singletonObject);
 				}
 			}

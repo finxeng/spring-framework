@@ -741,6 +741,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			//只能实例、初始化非抽象、单例、非懒加载的bean
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				//判断是否为FactoryBean {@link org.springframework.beans.factory.FactoryBean}.
+				//如果实现了FactoryBean，则意味这bean的实例方式是继承者自定义
 				if (isFactoryBean(beanName)) {
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {

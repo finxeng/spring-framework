@@ -527,6 +527,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Prepare the bean factory for use in this context.
 			//设置手动注册的bean，以及部分Aware
+			// @Autowired 注解就是这儿生效的
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -558,6 +559,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 扩展方法，子类覆盖，初始化自定义bean
 				onRefresh();
 
 				// Check for listener beans and register them.
@@ -615,6 +617,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment
+		// 子类实现方法
 		// 如果StandardEnvironment 不存在 则创建
 		// 向environment设置属性值
 		initPropertySources();
@@ -667,9 +670,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
-		//设置类加载器
+		// 设置类加载器
 		beanFactory.setBeanClassLoader(getClassLoader());
-		//设置EL表达式解析器 用于bean初始化之后给bena填充属性
+		//设置EL表达式解析器 用于bean初始化之后给bean填充属性
+		// 例如可以使用#{***}获取属性值
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
@@ -725,7 +729,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Register default environment beans.
-		// 判断环境变量等特殊bena是否注册成功
+		// 判断环境变量等特殊bean是否注册成功
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}

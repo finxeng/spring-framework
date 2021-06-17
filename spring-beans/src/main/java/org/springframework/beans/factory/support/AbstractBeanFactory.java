@@ -269,6 +269,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 			// Check if bean definition exists in this factory.
 			BeanFactory parentBeanFactory = getParentBeanFactory();
+			//BeanFactory不包含此bean的BeanDefinition
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
 				String nameToLookup = originalBeanName(name);
@@ -318,8 +319,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
-				// 开始实例、初始化当前的bean
+				// 开始实例、初始化当前的bean（根据如上条件得该bean的所有依赖已经被实例化）
 				if (mbd.isSingleton()) {
+					//获取到bean的原生对象
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							//实例化、初始化无依赖无其他依赖条件的bean
